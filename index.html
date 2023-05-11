@@ -44,6 +44,15 @@
             cursor: pointer;
         }
 
+        select {
+            margin: 0;
+            cursor: pointer;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #ffffff;
+        }
+
         form {
             padding: 30px;
             background-color: #f2f2f2;
@@ -62,6 +71,7 @@
             margin-bottom: 5px;
             font-weight: 600;
             margin-left: 15px;
+            margin-bottom: 2px;
         }
 
         .error-message {
@@ -69,6 +79,7 @@
             font-size: 12px;
             margin-top: 5px;
             display: none;
+            width: 65%;
         }
 
         input[type="text"],
@@ -156,17 +167,30 @@
         .delete:hover {
             background-color: red;
         }
+
+        .box {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            text-align: right;
+            align-items: center;
+            height: 40px;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 
 <body>
     <form method='GET' id="add-color-form">
         <h1>Палитра цветов</h1>
-        <label for="color-name">Название:</label>
-        <p id="name-error" class="error-message"></p>
+        <div class="box">
+            <label for="color-name">Название:</label>
+            <p id="name-error" class="error-message"></p>
+        </div>
         <input type="text" id="color-name" name="color-name" pattern="[A-Za-zА-Яа-яЁё\s]+" required>
-        <br>
-        <label for="color-type">Тип:</label>
+        <div class="box">
+            <label for="color-type">Тип:</label>
+        </div>
         <select id="color-type" name="color-type">
             <option value="RGB">RGB</option>
             <option value="RGBA">RGBA</option>
@@ -175,11 +199,13 @@
             <option value="HSLA">HSLA</option>
         </select>
         <br>
-        <label for="color-code">Код цвета:</label>
-        <p id="code-error" class="error-message"></p>
+        <div class="box">
+            <label for="color-code">Код цвета:</label>
+            <p id="code-error" class="error-message"></p>
+        </div>
         <input type="text" id="color-code" name="color-code" required>
         <br>
-        <button type="submit">Save</button>
+        <button type="submit">Создать</button>
     </form>
 
     <div id="outer-container">
