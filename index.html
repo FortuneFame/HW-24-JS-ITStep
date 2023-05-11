@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <title>Палитра цветов</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            background-color: #ff6b08;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        button {
+            padding: 0;
+            border: none;
+            font: inherit;
+            color: inherit;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        form {
+            padding: 30px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            width: 35%;
+            margin: auto;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px 25px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #f2f2f2;
+            border-radius: 4px;
+            display: block;
+            margin: auto;
+            color: #212121;
+            padding: 15px 20px;
+            list-style: none;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: .3s;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"]:hover {
+            color: #fff;
+            background-color: #ff6b08;
+            border-color: #ffffff;
+            transition: .15s ease-in-out;
+
+        }
+
+        #color-code {
+            margin-bottom: 30px;
+        }
+
+        #outer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item-box {
+            width: 300px;
+            padding: 20px 40px;
+            margin: 15px;
+            border: 1px solid rgba(205, 214, 219, 0.9);
+        }
+
+        .item {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: rgba(205, 214, 219, 0.6);
+            text-align: center;
+            padding: 5px;
+        }
+
+        .name {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .type {
+            margin-bottom: 10px;
+        }
+
+        .code {
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .delete {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* background-color: tomato; */
+            color: #fff;
+            width: 100%;
+            padding: 5px;
+        }
+
+        .delete:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form method='GET' id="add-color-form">
+        <h1>Палитра цветов</h1>
+        <label for="color-name">Название:</label>
+        <p id="name-error" class="error-message"></p>
+        <input type="text" id="color-name" name="color-name" pattern="[A-Za-zА-Яа-яЁё\s]+" required>
+        <br>
+        <label for="color-type">Тип:</label>
+        <select id="color-type" name="color-type">
+            <option value="RGB">RGB</option>
+            <option value="RGBA">RGBA</option>
+            <option value="HEX">HEX</option>
+            <option value="HSL">HSL</option>
+            <option value="HSLA">HSLA</option>
+        </select>
+        <br>
+        <label for="color-code">Код цвета:</label>
+        <p id="code-error" class="error-message"></p>
+        <input type="text" id="color-code" name="color-code" required>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+
+    <div id="outer-container">
+
+    </div>
+    <script>
+
+        function displayColors(colors) {
+            const outerContainer = document.getElementById("outer-container");
+            outerContainer.innerHTML = "";
+
+            for (const color of colors) {
+
+                const colorContainer = document.createElement("div");
+                const colorDiv = document.createElement("div");
+                const colorName = document.createElement("p");
+                const colorType = document.createElement("p");
+                const colorCode = document.createElement("p");
+                const deleteButton = document.createElement("button");
+
+                colorName.textContent = color.name;
+                colorType.textContent = color.type;
+                colorCode.textContent = color.code.replace(/,/g, ', ');
+                deleteButton.textContent = "Удалить";
+
+                colorDiv.appendChild(colorName);
+                colorDiv.appendChild(colorType);
+                colorDiv.appendChild(colorCode);
+                colorDiv.appendChild(deleteButton);
+                colorContainer.appendChild(colorDiv);
+                outerContainer.appendChild(colorContainer);
+
+                colorDiv.classList.add('item');
+                colorContainer.classList.add('item-box');
+                colorName.classList.add('name');
+                colorType.classList.add('type');
+                colorCode.classList.add('code');
+                deleteButton.classList.add('delete');
+
+
+                let backgroundColor;
+
+                // Определение цвета фона
+                if (color.type === "HEX") {
+                    backgroundColor = color.code;
+                } else if (color.type === "RGB" || color.type === "RGBA") {
+                    backgroundColor = `rgba(${color.code})`;
+                } else if (color.type === "HSL" || color.type === "HSLA") {
+                    backgroundColor = `hsla(${color.code})`;
+                }
+                colorContainer.style.backgroundColor = backgroundColor;
+
+                // Удаление цвета
+                deleteButton.addEventListener("click", () => {
+                    const index = colors.indexOf(color);
+                    if (index > -1) {
+                        colors.splice(index, 1);
+                    }
+                    displayColors(colors);
+                    saveColorsToCookie(colors);
+                });
+            };
+        };
+
+        // Извлечение по имени
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) {
+                return parts.pop().split(";").shift();
+            }
+        };
+
+        // Безопасности (помог интернет)
+        function safeStringify(obj) {
+            try {
+                return JSON.stringify(obj);
+            } catch (error) {
+                console.error("Ошибка при сериализации объекта:", error);
+                return null;
+            }
+        };
+        function safeParse(json) {
+            try {
+                return JSON.parse(json);
+            } catch (error) {
+                console.error("Ошибка при разборе JSON:", error);
+                return null;
+            }
+        };
+
+        // Сохранение
+        function saveColorsToCookie(colors) {
+            colors = colors.map((color) => ({
+                ...color,
+                createdAt: color.createdAt || new Date().toISOString(),
+            }));
+            const jsonString = safeStringify(colors);
+            if (jsonString) {
+                setCookie("colors", jsonString, 3);
+            }
+        };
+
+        // Загрузка 
+        function loadColorsFromCookie() {
+            const colorsJson = getCookie("colors");
+            if (colorsJson) {
+                const parsedColors = safeParse(colorsJson);
+                if (parsedColors) {
+                    return parsedColors;
+                }
+            }
+            return initialColors;
+        };
+
+        // Установка кука
+        function setCookie(name, value, hours) {
+            const d = new Date();
+            d.setTime(d.getTime() + hours * 60 * 1000);
+            // d.setTime(d.getTime() + hours * 60 * 60 * 1000); На 3 часа
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = `${name}=${value};${expires};path=/;SameSite=None;Secure`;
+        };
+
+        // Валидации данных
+        function validateColor(name, type, code) {
+
+            code = code.replace(/,\s+/g, ',');
+
+            const nameError = document.getElementById("name-error");
+            const codeError = document.getElementById("code-error");
+            nameError.style.display = "none";
+            codeError.style.display = "none";
+
+            let hasErrors = false;
+
+            const errors = [];
+
+            // Валидации Названия
+            if (!name) {
+                nameError.textContent = "Название обязательное поле";
+                nameError.style.display = "block";
+                hasErrors = true;
+            } else if (!/^[a-zA-Zа-яА-ЯёЁіІїЇґҐ']+$/.test(name)) {
+                nameError.textContent = "Название может содержать только буквенные символы";
+                nameError.style.display = "block";
+                hasErrors = true;
+            }
+
+            // Валидации Кода
+
+            switch (type) {
+                case "RGB":
+                    if (!/^(\d{1,3},\s?){2}\d{1,3}$/.test(code)) {
+                        errors.push(
+                            "RGB-код должен содержать 3 числа через запятую, каждое число в диапазоне от 0 до 255"
+                        );
+                    }
+                    break;
+
+                case "RGBA":
+                    if (!/^(\d{1,3},\s?){2}\d{1,3},\s?(\d(\.\d{1,})?|1(\.0{1,})?|0)$/.test(code)) {
+                        errors.push(
+                            "RGBA-код должен содержать 4 числа через запятую, первые 3 числа в диапазоне от 0 до 255, последнее число от 0 до 1"
+                        );
+                    }
+                    break;
+
+                case "HEX":
+                    if (!/^#[A-Fa-f0-9]{6}$/.test(code)) {
+                        errors.push(
+                            "HEX-код должен содержать символ # и 6 цифр или букв от A до F"
+                        );
+                    }
+                    break;
+
+                case "HSL":
+                    if (!/^\d{1,3},\s?\d{1,3}%,\s?\d{1,3}%$/.test(code)) {
+                        errors.push(
+                            "HSL-код должен содержать 3 числа через запятую: число от 0 до 360, 2 числа с символом % от 0 до 100"
+                        );
+                    }
+                    break;
+                case "HSLA":
+                    if (!/^\d{1,3},\s?\d{1,3}%,\s?\d{1,3}%,\s?(\d(\.\d{1,})?|1(\.0{1,})?|0)$/.test(code)) {
+                        errors.push(
+                            "HSLA-код должен содержать 4 числа через запятую: число от 0 до 360, 2 числа с символом % от 0 до 100, последнее число от 0 до 1"
+                        );
+                    }
+                    break;
+            }
+
+            if (errors.length > 0) {
+                codeError.textContent = errors.join("\n");
+                codeError.style.display = "block";
+                hasErrors = true;
+            }
+
+            return errors;
+        };
+
+        function handleAddColorFormSubmit(e) {
+            e.preventDefault();
+
+            // Получение данных
+            const name = e.target.elements["color-name"].value.toUpperCase();
+            const type = e.target.elements["color-type"].value;
+            const code = e.target.elements["color-code"].value;
+
+            // Валидация данных
+            const errors = validateColor(name, type, code);
+            if (errors.length > 0) {
+                return;
+            }
+
+            // Проверка на наличие цвета
+            const colorExists = initialColors.some(
+                (color) => (color.name === name && color.code === code) || (color.name !== name && color.code === code) || (color.name == name && color.code !== code)
+            );
+            if (colorExists) {
+                alert("Цвет с такими параметрами уже существует!");
+                return;
+            }
+
+            // Добавление нового цвета
+            const newColor = { name, type, code };
+            initialColors.push(newColor);
+            displayColors(initialColors);
+
+            // Очистка формы после добавления цвета
+            // e.target.reset();
+
+            // Сохранение в куки
+            saveColorsToCookie(initialColors);
+        };
+
+        // Инициализация начальных цветов
+        const initialColors = [{
+            name: "YELLOWGREEN",
+            type: "RGB",
+            code: "154, 205, 50",
+        },
+        {
+            name: "DARKCYAN",
+            type: "RGBA",
+            code: "0, 139, 139, 1",
+        },
+        {
+            name: "ORANGERED",
+            type: "HEX",
+            code: "#FF4500",
+        },
+        {
+            name: "DEEPSKYBLUE",
+            type: "HSL",
+            code: "195, 100%, 50%",
+        },
+        {
+            name: "LIMEGREEN",
+            type: "HSLA",
+            code: "120, 100%, 50%, 1",
+        },
+        ];
+
+        const addColorForm = document.getElementById("add-color-form");
+        const outerContainer = document.getElementById("outer-container");
+
+        addColorForm.addEventListener("submit", handleAddColorFormSubmit);
+
+        // Получение цветов из кука
+        const savedColors = loadColorsFromCookie();
+        displayColors(savedColors);
+
+    </script>
+</body>
+
+</html>
